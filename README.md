@@ -1,3 +1,7 @@
+![Screenshot 2023-07-28 232009](https://github.com/ophicial-pauloski/fullstack-airbnb/assets/57170298/5119b395-6c78-4ee6-82cf-6a9813ff5acb)
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
