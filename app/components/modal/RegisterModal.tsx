@@ -9,10 +9,10 @@ import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 import Modal from "./Modal";
-import useRegisterModal from "@/app/hook/useRegisterModal";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
 import Heading from "../common/Heading";
 import Input from "../common/Input";
-import useLoginModal from "@/app/hook/useLoginModal";
+import useLoginModal from "@/app/hooks/useLoginModal";
 import Button from "../common/Button";
 
 const RegisterModal = () => {

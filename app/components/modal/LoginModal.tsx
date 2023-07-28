@@ -8,10 +8,9 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 
-
 import Modal from "./Modal";
-import useLoginModal from "@/app/hook/useLoginModal";
-import useRegisterModal from "@/app/hook/useRegisterModal";
+import useLoginModal from "@/app/hooks/useLoginModal";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
 import Heading from "../common/Heading";
 import Input from "../common/Input";
 import Button from "../common/Button";

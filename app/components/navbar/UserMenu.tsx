@@ -1,24 +1,26 @@
 "use client";
 
-import { User } from "@prisma/client";
 import { useState, useCallback } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import MenuItem from "./MenuItem";
 import { useRouter } from "next/navigation";
 import Avatar from "../common/Avatar";
-import useRegisterModal from "@/app/hook/useRegisterModal";
-import useLoginModal from "@/app/hook/useLoginModal"
+
+import useRegisterModal from "@/app/hooks/useRegisterModal";
+import useLoginModal from "@/app/hooks/useLoginModal";
+import useRentModal from "@/app/hooks/useRentModal";
+
 import { signOut } from "next-auth/react";
+import { safeUser } from "@/app/types";
 
 interface UserMenuProps {
-  currentUser?: User | null
+  currentUser?: safeUser | null;
 }
 
-const UserMenu:React.FC<UserMenuProps> = ({
-  currentUser
-}) => {
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const registerModal = useRegisterModal();
-  const loginModal = useLoginModal()
+  const loginModal = useLoginModal();
+  const rentModal = useRentModal();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -26,10 +28,19 @@ const UserMenu:React.FC<UserMenuProps> = ({
     setIsOpen(open => !open);
   }, []);
 
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+
+    rentModal.onOpen();
+  }, [currentUser, loginModal, rentModal]);
+
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         <div
+          onClick={onRent}
           className="
             hidden
             md:block
@@ -65,7 +76,7 @@ const UserMenu:React.FC<UserMenuProps> = ({
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar src="" />
+            <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>
@@ -103,9 +114,7 @@ const UserMenu:React.FC<UserMenuProps> = ({
                   label="My properties"
                   onClick={() => router.push("/properties")}
                 />
-                <MenuItem
-                  label="Airbnb your home" /* onClick={rentModal.onOpen} */
-                />
+                <MenuItem label="Airbnb your home" onClick={rentModal.onOpen} />
                 <hr />
                 <MenuItem label="Logout" onClick={() => signOut()} />
               </>

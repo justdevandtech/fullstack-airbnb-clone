@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(uuid()) @db.Uuid
+  id             String    @id @default(cuid())
   name           String?
   email          String?   @unique
   emailVerified  DateTime?
@@ -19,34 +19,51 @@ model User {
   hashedPassword String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  fovouriteIds   String[]  @db.Uuid
+  favoriteIds    String[]  @db.Text
 
   accounts     Account[]
   listings     Listing[]
   reservations Reservation[]
+  Session      Session[]
 }
 
 model Account {
-  id                String  @id @default(uuid()) @db.Uuid
+  id                String  @id @default(cuid())
+  userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Uuid
-  access_token      String? @db.Uuid
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Uuid
+  id_token          String? @db.Text
   session_state     String?
-  userId            String  @db.Uuid
 
-  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model Listing {
-  id            String   @id @default(uuid()) @db.Uuid
+  id            String   @id @default(cuid())
   title         String
   description   String
   imageSrc      String
@@ -58,15 +75,15 @@ model Listing {
   locationValue String
   price         Int
 
-  User        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String        @db.Uuid
-  Reservation Reservation[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String        @db.Text
+  reservations Reservation[]
 }
 
 model Reservation {
-  id         String   @id @default(uuid()) @db.Uuid
-  userId     String   @db.Uuid
-  listingId  String   @db.Uuid
+  id         String   @id @default(cuid())
+  userId     String   @db.Text
+  listingId  String   @db.Text
   startDate  DateTime
   endDate    DateTime
   totalPrice Int

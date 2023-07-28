@@ -1,12 +1,10 @@
 "use client";
 
-import { FC } from "react";
-
 interface containerProps {
   children: React.ReactNode;
 }
 
-const Container: FC<containerProps> = ({ children }) => {
+const Container: React.FC<containerProps> = ({ children }) => {
   return (
     <div
       className="
